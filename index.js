@@ -6,8 +6,8 @@ const STORE = {
   {name: "oranges", checked: false},
   {name: "milk", checked: true},
   {name: "bread", checked: false}
-]
-  
+],
+   hideCheckedItems: false
 }
 
 
@@ -39,10 +39,18 @@ function generateShoppingItemsString(shoppingList) {
 function renderShoppingList() {
   // render the shopping list in the DOM
   console.log('`renderShoppingList` ran');
-  const shoppingListItemsString = generateShoppingItemsString(STORE.items);
+  let filteredItems = STORE.items;
+  if (STORE.hideCheckedItems === true) {
+    filteredItems = STORE.items.filter(function(item) {
+      return item.checked === false;
+    })
+  }
+
+  const shoppingListItemsString = generateShoppingItemsString(filteredItems);
 
   // insert that HTML into the DOM
   $('.js-shopping-list').html(shoppingListItemsString);
+
 }
 
 
@@ -93,16 +101,18 @@ function handleDeleteItemClicked() {
   // item
   // fench info
   $('.js-shopping-list').on('click', '.js-item-delete', event => {
-    const itemIndex = getItemIndexFromElement(event.target)
+    const itemIndex = getItemIndexFromElement(event.target);
     deleteItem(itemIndex);
     renderShoppingList();
   })
+  console.log('`handleDeleteItemClicked` ran');
+}
 
-  // change store
-
-
-  //render
-  console.log('`handleDeleteItemClicked` ran')
+function handleHideItemChecked() {
+  $('.js-shopping-list-hide').on('click', () => {
+    STORE.hideCheckedItems = !STORE.hideCheckedItems;
+    renderShoppingList();
+  })
 }
 
 // this function will be our callback when the page loads. it's responsible for
@@ -114,6 +124,7 @@ function handleShoppingList() {
   handleNewItemSubmit();
   handleItemCheckClicked();
   handleDeleteItemClicked();
+  handleHideItemChecked()
 }
 
 // when the page loads, call `handleShoppingList`
