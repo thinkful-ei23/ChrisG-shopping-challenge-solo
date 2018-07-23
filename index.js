@@ -154,16 +154,16 @@ function handleSearchedItems() {
 }
 // *****************************************************************
 //**********************************************Edit item part */
-function changeStoreItems(itemIndex) {
-  // if not work try edit-item
+// function changeStoreItems(itemIndex) {
+//   // if not work try edit-item
   
-}
+// }
 
 function handleEditItem() {
   // when the item is double clicked add html that allows userInput
   // create a event listener that listens for userInput
   // replace value in STORE 
-  $('.js-shopping-item').dblclick(function() {
+  $('.js-shopping-list').on('dblclick','.js-shopping-item' ,function() {
     $(this).html('<input class="edit-item" type="text">');
 
     $('.js-shopping-item').on('keyup', function(event) {
