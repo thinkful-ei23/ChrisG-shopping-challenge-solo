@@ -16,7 +16,7 @@ const STORE = {
 function generateItemElement(item, itemIndex, template) {
   return `
     <li class="js-item-index-element" data-item-index="${itemIndex}">
-      <span class="shopping-item js-shopping-item ${item.checked ? "shopping-item__checked" : ''}">${item.name}</span>
+      <span class="shopping-item js-shopping-item ${item.checked ? 'shopping-item__checked' : ''}">${item.name}</span>
       <div class="shopping-item-controls">
         <button class="shopping-item-toggle js-item-toggle">
             <span class="button-label">check</span>
@@ -55,7 +55,7 @@ function renderShoppingList() {
   }
   /************** *************/
   const shoppingListItemsString = generateShoppingItemsString(filteredItems);
-
+  console.log(STORE);
   // insert that HTML into the DOM
   $('.js-shopping-list').html(shoppingListItemsString);
 }
@@ -77,24 +77,24 @@ function handleNewItemSubmit() {
   });
 }
 
-//********************** Newly added search box *************************/
+// //********************** Newly added search box *************************/
 
-function searchFilterItems(searchedItem) {
-  STORE.wordSearch = searchedItem;
-}
+// function searchFilterItems(searchedItem) {
+//   STORE.wordSearch = searchedItem;
+// }
 
-function handleSearchedItems() {
-  $('.js-shopping-list-search').on('keyup', function() {
-    event.preventDefault();
-    let searchWord = $(this).val().toLowerCase();
+// function handleSearchedItems() {
+//   $('.js-shopping-list-search').on('keyup', function() {
+//     event.preventDefault();
+//     let searchWord = $(this).val().toLowerCase();
 
-    searchFilterItems(searchWord);
-    renderShoppingList();
-  });
-}
-// *****************************************************************
+//     searchFilterItems(searchWord);
+//     renderShoppingList();
+//   });
+// }
+// // *****************************************************************
 function toggleCheckedForListItem(itemIndex) {
-  console.log("Toggling checked property for item at index " + itemIndex);
+  console.log('Toggling checked property for item at index ' + itemIndex);
   STORE.items[itemIndex].checked = !STORE.items[itemIndex].checked;
 }
 
@@ -137,6 +137,48 @@ function handleHideItemChecked() {
     renderShoppingList();
   });
 }
+//********************** Newly added search box *************************/
+
+function searchFilterItems(searchedItem) {
+  STORE.wordSearch = searchedItem;
+}
+
+function handleSearchedItems() {
+  $('.js-shopping-list-search').on('keyup', function() {
+    event.preventDefault();
+    let searchWord = $(this).val().toLowerCase();
+
+    searchFilterItems(searchWord);
+    renderShoppingList();
+  });
+}
+// *****************************************************************
+//**********************************************Edit item part */
+function changeStoreItems(itemIndex) {
+  // if not work try edit-item
+  
+}
+
+function handleEditItem() {
+  // when the item is double clicked add html that allows userInput
+  // create a event listener that listens for userInput
+  // replace value in STORE 
+  $('.js-shopping-item').dblclick(function() {
+    $(this).html('<input class="edit-item" type="text">');
+
+    $('.js-shopping-item').on('keyup', function(event) {
+      if (event.key === 'Enter') {
+        console.log('Hi');
+  
+        let userValue = $('.edit-item').val();
+        let itemIndex = (getItemIndexFromElement(event.currentTarget));
+        STORE.items[itemIndex].name = userValue;
+        // changeStoreItems(itemIndex);
+        renderShoppingList();
+      }
+    });
+  });
+}
 /*************************************************************** */
 // this function will be our callback when the page loads. it's responsible for
 // initially rendering the shopping list, and activating our individual functions
@@ -151,6 +193,7 @@ function handleShoppingList() {
   //added both below
   handleDeleteItemClicked();
   handleHideItemChecked();
+  handleEditItem();
 }
 
 // when the page loads, call `handleShoppingList`
