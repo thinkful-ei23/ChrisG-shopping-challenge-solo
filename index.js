@@ -168,8 +168,7 @@ function handleEditItem() {
 
     $('.js-shopping-item').on('keyup', function(event) {
       if (event.key === 'Enter') {
-        console.log('Hi');
-  
+
         let userValue = $('.edit-item').val();
         let itemIndex = (getItemIndexFromElement(event.currentTarget));
         STORE.items[itemIndex].name = userValue;
